@@ -64,7 +64,7 @@ const Questions:React.FC = () => {
     
 
     const fetchData = () => {
-        axios.get("http://localhost:8000/quizs/getQuizDetialsById/"+quizId)
+        axios.get("/quizs/getQuizDetialsById/"+quizId)
         .then((res) => {
             setQuestions(res.data.quiz.questions);
             var zerosList = [];
@@ -91,7 +91,7 @@ const Questions:React.FC = () => {
                 answered += 1;
         }
 
-        axios.post("http://localhost:8000/users/addQuiz",{
+        axios.post("/users/addQuiz",{
             userId:user?._id,
             quizId:quizId,
             answered:answered,

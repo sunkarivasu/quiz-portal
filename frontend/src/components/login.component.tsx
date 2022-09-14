@@ -162,7 +162,7 @@ const Registration:React.FC = (props) => {
     {
       console.log("every thing okay");
       
-      axios.post("http://localhost:8000/users/add",{
+      axios.post("/users/add",{
         ...registrationDetials
       }).then((res) => {console.log(res.data)
         if(res.data.success === true)
@@ -260,7 +260,7 @@ const Registration:React.FC = (props) => {
     
     if(lemailError.textContent === "" && lPasswordError.textContent === "")
     {
-      axios.post("http://localhost:8000/users/login",{
+      axios.post("/users/login",{
       ...loginDetials
     })
     .then((res) => {

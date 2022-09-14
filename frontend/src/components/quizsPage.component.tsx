@@ -104,7 +104,7 @@ const QuizsPage:React.FC = () => {
     const getAllQuizsOfSubTopic = (subTopicName:string) => {
         console.log(topic,subTopicName);
         
-        axios.get("http://localhost:8000/quizs/fetchAllQuizsByTopicAndSubTopic/"+topic+"/"+subTopicName).then((res) =>
+        axios.get("/quizs/fetchAllQuizsByTopicAndSubTopic/"+topic+"/"+subTopicName).then((res) =>
         {
             console.log(res.data);
             setAllQuizList(res.data.quizs);

@@ -20,7 +20,7 @@ const Dashboard = () => {
     
     useEffect(() => {
         console.log("useEffect");
-        axios.get("http://localhost:8000/users/getUserDetailsById/"+userId)
+        axios.get("/users/getUserDetailsById/"+userId)
         .then((res) => {
             
             console.log(res.data);

@@ -298,7 +298,7 @@ const CreateAQuiz = () => {
             console.log(quizDetials);
             
         }
-        axios.post("http://localhost:8000/quizs/add",{
+        axios.post("/quizs/add",{
             ...quizDetials
         })
         .then((res) => {
