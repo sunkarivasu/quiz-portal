@@ -27,6 +27,12 @@ const CreateAQuiz = () => {
     // var [isAddQuestionsButtonClicked,setIsAddQuestionsButtonClicked] = useState<boolean>(false);
     var [disableTopFeilds,setDisableTopFeilds] = useState(false);
     var [numberArray,setNumberArray] = useState<number[]>([]);
+    var [topicErr,setTopicErr] = useState("")
+    var [subTopicErr,setSubTopicErr] = useState("")
+    var [nameerr,setNameErr] = useState("")
+    var [numberOfQuestionsErr,setNumberOfQuestionsErr] = useState("")
+    var [qualifyPercentageErr,setQualifyPercentageErr] = useState("")
+    var [numberOfQuestionsErr,setNumberOfQuestionsErr] = useState("")
 
     var [quizDetials,setQuizDetails] = useState<{
         topic:string,
@@ -59,20 +65,23 @@ const CreateAQuiz = () => {
 
     const validateInput = () => {
 
+        console.log("validating input");
+        console.log(quizDetials.name === "");
+        
+        
         var stringRegex = RegExp(/^[a-zA-Z]{4,}$/);
         var quizRegex = RegExp(/^[0-9a-zA-Z\s]{1,}$/gm);
         var numberOfQuestionsRegex = RegExp(/^[0-9]{1,}$/);
-        var topicErr = ""
-        var subTopicErr = ""
+        var topicerr = ""
+        var subTopicerr = ""
         var nameErr = ""
-        var numberOfQuestionsErr = ""
-        var qualifyPercentageErr = ""
-        var numberOfQuestionsErr = ""
+        var numberOfQuestionserr = ""
+        var qualifyPercentageerr = ""
         
         
         //topic
         if(quizDetials.topic === "")
-            topicErr = "Select Topic Name";
+            topicerr = "Select Topic Name";
         // else if (quizDetials.topic.length<4)
         //     topicErr = "Topic Name should contain atleast 3 characters";
         // else if (!stringRegex.test(quizDetials.topic))
@@ -82,7 +91,7 @@ const CreateAQuiz = () => {
 
         //subTopic
         if(quizDetials.subTopic === "")
-            subTopicErr = "Select SubTopic Name";
+            subTopicerr = "Select SubTopic Name";
         // else if (quizDetials.subTopic.length<4)
         //     subTopicErr = "SubTopic Name should contain atleast 3 characters";
         // else if (!stringRegex.test(quizDetials.subTopic))
@@ -102,34 +111,52 @@ const CreateAQuiz = () => {
 
         //number of Questions
         if(quizDetials.numberOfQuestions === 0)
-            numberOfQuestionsErr = "Enter number of Questions";
+            numberOfQuestionserr = "Enter number of Questions"
         else if(!numberOfQuestionsRegex.test(""+quizDetials.numberOfQuestions))
-            numberOfQuestionsErr = "Number of Questions should be an number";
+            numberOfQuestionserr = "Number of Questions should be an number"
         else
-            numberOfQuestionsErr = ""
+            numberOfQuestionserr =""
             
         //qualifyPercentage
         if(quizDetials.qualifyPercentage === 0)
-            qualifyPercentageErr = "Enter Qualify Percentage";
+            qualifyPercentageerr = "Enter Qualify Percentage";
         else if(!numberOfQuestionsRegex.test(""+quizDetials.qualifyPercentage))
-            qualifyPercentageErr = "Qualify Percentage sholud contain only numbers";
+            qualifyPercentageerr="Qualify Percentage sholud contain only numbers";
         else if (quizDetials.qualifyPercentage>100)
-            qualifyPercentageErr = "Qualify Percentage should be less than or equal to 100";
+            qualifyPercentageerr="Qualify Percentage should be less than or equal to 100";
 
-        setQuizDetails({...quizDetials,
-        nameErr:nameErr,
-        topicErr:topicErr,
-        subTopicErr:subTopicErr,
-        numberOfQuestionsErr:numberOfQuestionsErr,
-        qualifyPercentageErr:qualifyPercentageErr   
-    })
+        setTopicErr(topicErr);
+        setSubTopicErr(subTopicerr)
+        setNameErr(nameErr);
+        setNumberOfQuestionsErr(numberOfQuestionserr)
+        setQualifyPercentageErr(qualifyPercentageerr)
+        
+    //     console.log({...quizDetials,
+    //         nameErr:nameerr,
+    //     topicErr:topicErr,
+    //     subTopicErr:subTopicErr,
+    //     numberOfQuestionsErr:numberOfQuestionsErr,
+    //     qualifyPercentageErr:qualifyPercentageErr
+    //     });
+        
 
-        if(nameErr === "" && topicErr === "" && subTopicErr === "" && numberOfQuestionsErr === "" && qualifyPercentageErr === "")
+    //     setQuizDetails({...quizDetials,
+    //     nameErr:nameerr,
+    //     topicErr:topicErr,
+    //     subTopicErr:subTopicErr,
+    //     numberOfQuestionsErr:numberOfQuestionsErr,
+    //     qualifyPercentageErr:qualifyPercentageErr   
+    // })
+        
+        console.log(quizDetials);
+    
+
+        if(nameErr === "" && topicerr === "" && subTopicerr === "" && numberOfQuestionserr === "" && qualifyPercentageerr === "")
         {
             setDisableTopFeilds(true); 
             return true;
         }
-        console.log(quizDetials);
+        // console.log(quizDetials);
         return false;
     }
 
@@ -201,6 +228,24 @@ const CreateAQuiz = () => {
             [name]:value
         });
 
+    }
+
+    const resetForm = () => {
+        setQuizDetails({
+            topic:"Aptitude",
+            subTopic:"",
+            name:"",
+            numberOfQuestions:0,
+            qualifyPercentage:0,
+            questions:[],
+            topicErr:"",
+            subTopicErr:"",
+            nameErr:"",
+            numberOfQuestionsErr:"",
+            qualifyPercentageErr:"",
+            questionsErr:"",
+        });
+        setDisableTopFeilds(false);
     }
 
     const handleChangeQuestionInput = (name:number,id:number,value:string|number) => {
@@ -302,6 +347,7 @@ const CreateAQuiz = () => {
             ...quizDetials
         })
         .then((res) => {
+            resetForm();
             console.log(res.data);
         })
         .catch((err) => console.log(err))
@@ -319,7 +365,7 @@ const CreateAQuiz = () => {
                         return <option key={t} value={t}>{t}</option>
                     })}
                 </select>
-                <p className="error">{quizDetials.topicErr}</p>
+                <p className="error">{topicErr}</p>
             </div>
             <div className="form-field">
                 <label htmlFor="subTopic">Sub Topic</label>
@@ -330,28 +376,28 @@ const CreateAQuiz = () => {
                         return <option key={st} value={st}>{st}</option>
                     })}
                 </select>
-                <p className="error">{quizDetials.subTopicErr}</p>
+                <p className="error">{subTopicErr}</p>
             </div>
             <div className="form-field">
                 <label htmlFor="quizName">Quiz Name</label>
                 <input type="text" name="name" value={quizDetials.name} className="form-control" id="quizName" placeholder="Quiz 1"  onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
                     handleChangeInput("name",e.target.value);
                 }} disabled={disableTopFeilds}/>
-                <p className="error">{quizDetials.nameErr}</p>
+                <p className="error">{nameerr}</p>
             </div>
             <div className="form-field">
                 <label htmlFor="numberOfQuestions">Number of Questions</label>
                 <input type="text" className="form-control" id="numberOfQuestions" onChange={(e:React.ChangeEvent<HTMLInputElement>) => {setNumberOfQuestions(+e.target.value);
                     handleChangeInput("numberOfQuestions",+e.target.value);
                 }} disabled={disableTopFeilds}/>
-                <p className="error">{quizDetials.numberOfQuestionsErr}</p>
+                <p className="error">{numberOfQuestionsErr}</p>
             </div>
             <div className="form-field">
                 <label htmlFor="qualifyPercentage">Qualify Percentage</label>
                 <input type="text" className="form-control" id="qualifyPercentage" onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
                     handleChangeInput("qualifyPercentage",+e.target.value);
                 }} disabled={disableTopFeilds}/>
-                <p className="error">{quizDetials.qualifyPercentageErr}</p>
+                <p className="error">{qualifyPercentageErr}</p>
             </div>
             {disableTopFeilds? numberArray.length>0 &&
             <div>
@@ -406,6 +452,9 @@ const CreateAQuiz = () => {
             <button className="btn btn-dark" onClick={(e:React.MouseEvent) => {
                 console.log("clicked",numberOfQuestions);
                 e.preventDefault();
+                console.log("validation output");
+                console.log(validateInput());
+                
                 if(validateInput())
                     setDisableTopFeilds(true);
                 else
