@@ -230,6 +230,7 @@ const CreateAQuiz = () => {
 
     }
 
+    //reseting form after quiz is uploaded
     const resetForm = () => {
         setQuizDetails({
             topic:"Aptitude",
